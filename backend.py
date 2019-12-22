@@ -13,9 +13,9 @@ def writeToLog(now):
 def checkTime():
     global flag, backendroot
     a = None
-    with open('C:\\Users\\rohit\\Desktop\\Code\\Day-Planner\\remindersData.csv','r') as file:
-        #csv_reader = csv.reader(file) #these lines cause errors but are not necessary
-        #next(csv_reader)
+    with open('\\remindersData.csv','r') as file:
+        csv_reader = csv.reader(file) #these lines cause errors but are not necessary
+        next(csv_reader)
         for line in file:
             listLine = line.split(',')
             startTime = listLine[-2]
@@ -43,7 +43,7 @@ def checkTime():
                         flag = False
                         break
 
-    backendroot.after(1000,checkTime) #repeat checking process after x milliseconds for continuous background checking                
+    backendroot.after(60000,checkTime) #repeat checking process after x milliseconds for continuous background checking                
  
 def mail(From, to, body):
     gmail_usr = ""
