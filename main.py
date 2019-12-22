@@ -4,7 +4,7 @@ from datetime import date
 from datetime import datetime as dt
 import calendar
 import csv
-
+import backend #to use functions in the backend it must be imported
 import os
 
 global Entries
@@ -15,7 +15,7 @@ print(os.getcwd())
 os.chdir('C:\\Users\\rohit\\Desktop\\Code\\Day-Planner')
 print(os.getcwd())
 def createFile():
-    if os.path.exists('C:\\Users\\rohit\\Desktop\\Code\\Day-Planner\\remindersData.csv') == False:
+    if os.path.exists('C:\\Users\\JKUtt\\Desktop\\Day-Planner-1-master\\remindersData.csvC:\\Users\\rohit\\Desktop\\Code\\Day-Planner\\remindersData.csv') == False:
            # check if file exists
         with open('remindersData.csv', 'w', newline = '') as file:
             writer = csv.writer(file)
@@ -209,6 +209,6 @@ def email():                                # compose email and send it to the m
     email.to = "RECIEVERS ADRESS"
     email.subject = "FIRST EMAIL FROM PYTHON!!!!"
     email.body = "\n Sent from %s, \n sent to %s \n \n \n %s \n \n \n \n" % (email.sent_from, email.to, frontEnd.email_text)
-    backend.mail(email.sent_from ,email.to, email.body)
+    backend.mail(email.sent_from ,email.to, email.body) #with the import backend can now be called like this
 createFile()
 frontEnd()
