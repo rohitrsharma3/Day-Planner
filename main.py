@@ -4,7 +4,7 @@ from datetime import date
 from datetime import datetime as dt
 import calendar
 import csv
-
+import backend #to use functions in the backend it must be imported
 import os
 
 global Entries
@@ -209,6 +209,6 @@ def email():                                # compose email and send it to the m
     email.to = "RECIEVERS ADRESS"
     email.subject = "FIRST EMAIL FROM PYTHON!!!!"
     email.body = "\n Sent from %s, \n sent to %s \n \n \n %s \n \n \n \n" % (email.sent_from, email.to, frontEnd.email_text)
-    backend.mail(email.sent_from ,email.to, email.body)
+    backend.mail(email.sent_from ,email.to, email.body) #with the import backend can now be called like this
 createFile()
 frontEnd()
