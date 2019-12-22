@@ -15,7 +15,7 @@ print(os.getcwd())
 os.chdir('C:\\Users\\rohit\\Desktop\\Code\\Day-Planner')
 print(os.getcwd())
 def createFile():
-    if os.path.exists('C:\\Users\\JKUtt\\Desktop\\Day-Planner-1-master\\remindersData.csvC:\\Users\\rohit\\Desktop\\Code\\Day-Planner\\remindersData.csv') == False:
+    if os.path.exists('C:\\Users\\rohit\\Desktop\\Code\\Day-Planner\\remindersData.csv') == False:
            # check if file exists
         with open('remindersData.csv', 'w', newline = '') as file:
             writer = csv.writer(file)
