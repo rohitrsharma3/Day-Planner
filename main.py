@@ -22,20 +22,33 @@ def createFile():
             writer.writerow(["DATE", "NAME", "TYPE", "LENGTH", 'START', 'END'])
     print(os.getcwd()) 
 
-def countdown(dateList):
+def countdown():
+    dateList = []
+    nameList = []
+    with open('C:\\Users\\rohit\\Desktop\\Code\\Day-Planner\\calenderData.csv', 'r') as dates:
+        reader = csv.reader(dates)
+        next(reader)
+        for i in reader:
+            dateList.append(i[0])
+            nameList.append(i[1])
+    curYear = dt.now().year
     for i in dateList:
-        if dt.strptime(i , '%Y-%m-%d') - dt.today() <= datetime.timedelta(days = 10):
-            if dt.strptime(i, '%Y-%m-%d') - dt.strptime('2019-12-25','%Y-%m-%d') <= datetime.timedelta(days = 1):
-                daysTo = str(dt.strptime(i, '%Y-%m-%d') - dt(year = dt.now().year, month = dt.now().month, day = dt.now().day ,minute = dt.now().minute, second = dt.now().second)) + ' to christmas'
-
+        if dt.strptime(str(curYear) + "-" + i , '%Y-%m-%d') - dt.today() <= datetime.timedelta(days = 10 ) and dt.strptime(str(curYear) + "-" + i , '%Y-%m-%d'):
+            if dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.strptime('2019-12-25','%Y-%m-%d') <= datetime.timedelta(days = 1):
+                daysTo = str(dt.strptime(str(curYear)+'-'+i, '%Y-%m-%d') - dt(year = dt.now().year, month = dt.now().month, day = dt.now().day ,minute = dt.now().minute, second = dt.now().second)) + ' to christmas'
+            elif dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') == dt.today():
+                daysTo = "today is" + nameList[dateList.index(i)]
             else:
-                daysTo = str(25 - int(dt.today().day)) + " days to christmas"
+                if dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.strptime('2019-12-25','%Y-%m-%d') < datetime.timedelta(days = 0):
+                    daysTo = None
+                else:
+                    daysTo = str(25 - int(dt.today().day)) + " days to" + nameList[dateList.index(i)]
             return daysTo
 
 def refresh(stringvar, time):
     global plannerWindow
     if time != dt.now():
-        countdown_text = countdown(['2019-12-25'])
+        countdown_text = countdown()
         #text_to_display = stringvar.set()
         stringvar.set(countdown_text)
         plannerWindow.update()
@@ -161,7 +174,7 @@ def frontEnd():
     print("today is ",dt.now().strftime('%a, %d, %B, %y'))
     Message(leftFrame, text = str("today is "+ todayStr), anchor = "ne").pack(side =TOP)
     countdownString = StringVar(leftFrame)
-    countdownString.set(countdown(['2019-12-25']))
+    countdownString.set(countdown())
     frontEnd.eventMessage = Message(leftFrame, textvar = countdownString, relief = RAISED)
     frontEnd.eventMessage.pack(side = TOP)
     refresh(countdownString, dt.now())
