@@ -35,7 +35,7 @@ def countdown():
     for i in dateList:
         if dt.strptime(str(curYear) + "-" + i , '%Y-%m-%d') - dt.today() <= datetime.timedelta(days = 10 ) and dt.strptime(str(curYear) + "-" + i , '%Y-%m-%d'):
             if dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.strptime('2019-12-25','%Y-%m-%d') <= datetime.timedelta(days = 1):
-                daysTo = str(dt.strptime(str(curYear)+'-'+i, '%Y-%m-%d') - dt(year = dt.now().year, month = dt.now().month, day = dt.now().day ,minute = dt.now().minute, second = dt.now().second)) + ' to christmas'
+                daysTo = str(dt.strptime(str(curYear)+'-'+i, '%Y-%m-%d') - dt(year = dt.now().year, month = dt.now().month, day = dt.now().day ,minute = dt.now().minute, second = dt.now().second)) +' to '+ nameList[dateList.index(i)]
             elif dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') == dt.strftime(dt.today(), '%Y-%m-%d'):
                 daysTo = "today is " + nameList[dateList.index(i)]
             else:
