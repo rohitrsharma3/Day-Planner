@@ -1,4 +1,4 @@
-# Day-Planner
+# Day-Planner App
 
 This is my first project in Python. I've made an app using tkinter which allows you to createreminders for a specific date adn recieve emails as and when they are due. 
 
