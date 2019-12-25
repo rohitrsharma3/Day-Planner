@@ -37,10 +37,10 @@ def countdown():
         if dt.strptime(str(curYear) + "-" + i , '%Y-%m-%d') - dt.today() <= datetime.timedelta(days = 10 ):
             if dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.today() == datetime.timedelta(days = 1):
                 daysTo = str(dt.strptime(str(curYear)+'-'+i, '%Y-%m-%d') - dt(year = dt.now().year, month = dt.now().month, day = dt.now().day ,minute = dt.now().minute, second = dt.now().second)) + ' to '+nameList[dateList.index(i)]
-            elif dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.today() > datetime.timedelta(days = -2):
+            elif str(curYear) +"-" +i == dt.strftime(dt.today(), '%Y-%m-%d'):
                 daysTo = "today is " + nameList[dateList.index(i)]
             else:
-                if dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.today() < datetime.timedelta(days = -2):
+                if dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.today() < datetime.timedelta(days = -1):
                     daysTo = None
                 else:
                     daysTo = str(25 - int(dt.today().day)) + " days to" + nameList[dateList.index(i)]
