@@ -31,15 +31,16 @@ def countdown():
         for i in reader:
             dateList.append(i[0])
             nameList.append(i[1])
+    print(dateList, nameList)
     curYear = dt.now().year
     for i in dateList:
-        if dt.strptime(str(curYear) + "-" + i , '%Y-%m-%d') - dt.today() <= datetime.timedelta(days = 10 ) and dt.strptime(str(curYear) + "-" + i , '%Y-%m-%d'):
-            if dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.strptime('2019-12-25','%Y-%m-%d') <= datetime.timedelta(days = 1):
-                daysTo = str(dt.strptime(str(curYear)+'-'+i, '%Y-%m-%d') - dt(year = dt.now().year, month = dt.now().month, day = dt.now().day ,minute = dt.now().minute, second = dt.now().second)) +' to '+ nameList[dateList.index(i)]
-            elif dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') == dt.strftime(dt.today(), '%Y-%m-%d'):
+        if dt.strptime(str(curYear) + "-" + i , '%Y-%m-%d') - dt.today() <= datetime.timedelta(days = 10 ):
+            if dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.today() == datetime.timedelta(days = 1):
+                daysTo = str(dt.strptime(str(curYear)+'-'+i, '%Y-%m-%d') - dt(year = dt.now().year, month = dt.now().month, day = dt.now().day ,minute = dt.now().minute, second = dt.now().second)) + ' to '+nameList[dateList.index(i)]
+            elif dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.today() > datetime.timedelta(days = -2):
                 daysTo = "today is " + nameList[dateList.index(i)]
             else:
-                if dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.strptime('2019-12-25','%Y-%m-%d') < datetime.timedelta(days = 0):
+                if dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.today() < datetime.timedelta(days = -2):
                     daysTo = None
                 else:
                     daysTo = str(25 - int(dt.today().day)) + " days to" + nameList[dateList.index(i)]
@@ -173,11 +174,14 @@ def frontEnd():
     todayStr= dt.now().strftime('%a, %d, %B, %y')
     print("today is ",dt.now().strftime('%a, %d, %B, %y'))
     Message(leftFrame, text = str("today is "+ todayStr), anchor = "ne").pack(side =TOP)
-    countdownString = StringVar(leftFrame)
-    countdownString.set(countdown())
-    frontEnd.eventMessage = Message(leftFrame, textvar = countdownString, relief = RAISED)
-    frontEnd.eventMessage.pack(side = TOP)
-    refresh(countdownString, dt.now())
+    try:
+        countdownString = StringVar(leftFrame)
+        countdownString.set(countdown())
+        frontEnd.eventMessage = Message(leftFrame, textvar = countdownString, relief = RAISED)
+        frontEnd.eventMessage.pack(side = TOP)
+        refresh(countdownString, dt.now())
+    except:
+        pass
 
     lastDay = int(calendar.monthrange(2019, 12)[1])  # get total number of days in month            
     print("days this month,", lastDay)
