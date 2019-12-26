@@ -183,14 +183,18 @@ def frontEnd():
     diff = datetime.timedelta(days = 1)             # calculate next date
     todayStr= dt.now().strftime('%a, %d, %B, %y')
     print("today is ",dt.now().strftime('%a, %d, %B, %y'))
-    Message(leftFrame, text = str("today is "+ todayStr), anchor = "ne").pack(side =TOP)
+    try:
+        Message(leftFrame, text = str("today is "+ todayStr), anchor = "ne").pack(side =TOP)
 
-    countdownString = StringVar(leftFrame)
-    countdownString.set(countdown())
+        countdownString = StringVar(leftFrame)
+        countdownString.set(countdown())
+        if countdown!= None:
 
-    frontEnd.eventMessage = Message(leftFrame, textvar = countdownString, relief = RAISED)
-    frontEnd.eventMessage.pack(side = TOP)
-    refresh(countdownString, dt.now())
+            frontEnd.eventMessage = Message(leftFrame, textvar = countdownString, relief = RAISED)
+            frontEnd.eventMessage.pack(side = TOP)
+            refresh(countdownString, dt.now())
+    except:
+        pass
 
     lastDay = int(calendar.monthrange(2019, 12)[1])  # get total number of days in month            
     print("days this month,", lastDay)
