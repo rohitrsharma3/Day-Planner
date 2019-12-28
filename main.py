@@ -6,9 +6,12 @@ import calendar
 import csv
 import backend #to use functions in the backend it must be imported
 import os
+import random
 
 global Entries
+global colors
 
+colors = ["red", "black", "green", "blue", 'pink','yellow','orange']
 Entries = {}
 Events= {}
 print(os.getcwd())
@@ -34,26 +37,27 @@ def countdown():
     curYear = dt.now().year
     for i in dateList:
         if i == "01-01":
-            if dt.strptime(str(curYear) + "-" + i , '%Y-%m-%d') - dt.today() < datetime.timedelta(days = -1):
-                curYear = dt.now().year + 1
-        if dt.strptime(str(curYear) + "-" + i , '%Y-%m-%d') - dt.today() <= datetime.timedelta(days = 10 ):
-            if dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.today() == datetime.timedelta(days = 1):
-                daysTo = str(dt.strptime(str(curYear)+'-'+i, '%Y-%m-%d') - dt(year = dt.now().year, month = dt.now().month, day = dt.now().day ,minute = dt.now().minute, second = dt.now().second)) + ' to '+nameList[dateList.index(i)]
-                break
-            elif str(curYear) +"-" +i == dt.strftime(dt.today(), '%Y-%m-%d'):
-                daysTo = "today is " + nameList[dateList.index(i)]
-                break
-            else:
-                if dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.today() < datetime.timedelta(days = -1):
-                    daysTo = None
-                    pass
-                elif dt.strptime(str(curYear)+'-' +i, '%Y-%m-%d') - dt.today() > datetime.timedelta(days = 1):
-                    if i == "01-01":
-                        today = calendar.monthrange(curYear, dt.today().month)[1] - dt.today().day
-                        daysTo = str(abs(int(i[-2:]) - int(today))) + " days to " + nameList[dateList.index(i)]
+            curYear = date.today().year + 1
+            today = str(calendar.monthrange(dt.today().year, dt.today().month)[1] - dt.today().day) 
+
+        timeDiff = dt.strptime(str(curYear)+"-"+ i ,'%Y-%m-%d') - dt.today()
+        if timeDiff < datetime.timedelta(days = 10) and timeDiff >= datetime.timedelta(days =-1):
+            if timeDiff > datetime.timedelta(days = 1):
+                if i == '01-01':
+                    daysTo = today + " days to go to " + nameList[dateList.index(i)]
                     break
                 else:
-                    pass
+                    daysTo = str(int(i[-2:]) - int(dt.today().day)) + " days to go to " + nameList[dateList.index(i)]
+                    break
+            elif str(curYear)+"-"+i == dt.strftime(dt.today(), '%Y-%m-%d'):
+                daysTo = "Today is " + nameList[dateList.index(i)]
+                break
+            elif timeDiff < datetime.timedelta(days = 0, hours = 24):
+                daysTo = str(dt.strptime(str(curYear)+'-'+i, '%Y-%m-%d') - dt(year = dt.now().year, month = dt.now().month, day = dt.now().day ,minute = dt.now().minute, second = dt.now().second)) + ' to '+nameList[dateList.index(i)]
+                break
+        else:
+            daysTo = None
+            pass
     return daysTo
 
 def refresh(stringvar, time):
@@ -121,7 +125,7 @@ def createEntry():
 
     createEntry.evenTypes = ['Reminder', 'Event']                                              # create window for entering events
     createEntry.subEventType = ['All-Day', 'Limited']                               
-    replicateFrame = Frame(rightFrame, highlightbackground = "black", highlightthickness = 2)
+    replicateFrame = Frame(rightFrame, highlightbackground = colors[random.randint(0,len(colors)-1)], highlightthickness = 2)
     labelFrame = Frame(replicateFrame)
     entryFrame = Frame(replicateFrame)
     replicateFrame.pack(side = TOP)
@@ -165,11 +169,11 @@ def createmail():                           # convert input to email format
 def frontEnd(): 
     global plannerWindow, rootFrame, topFrame, bottomFrame, leftFrame, rightFrame                                          # creates the interface window
     frontEnd.counter = 1
-    plannerWindow = Tk()                           # the root window
+    plannerWindow = Tk()                        # the root window
     rootFrame = Frame(plannerWindow)
     topFrame = Frame(rootFrame)
     bottomFrame = Frame(rootFrame)
-    leftFrame = Frame(topFrame)
+    leftFrame = Frame(topFrame, highlightbackground = colors[random.randint(0,len(colors)-1)], highlightthickness = 2)
     rightFrame = Frame(topFrame)
     rootFrame.pack()
     topFrame.pack(side = TOP)
@@ -183,18 +187,17 @@ def frontEnd():
     diff = datetime.timedelta(days = 1)             # calculate next date
     todayStr= dt.now().strftime('%a, %d, %B, %y')
     print("today is ",dt.now().strftime('%a, %d, %B, %y'))
-    try:
-        Message(leftFrame, text = str("today is "+ todayStr), anchor = "ne").pack(side =TOP)
 
-        countdownString = StringVar(leftFrame)
-        countdownString.set(countdown())
-        if countdown!= None:
+    Message(leftFrame, text = str("today is "+ todayStr), anchor = "ne").pack(side =TOP)
 
-            frontEnd.eventMessage = Message(leftFrame, textvar = countdownString, relief = RAISED)
-            frontEnd.eventMessage.pack(side = TOP)
-            refresh(countdownString, dt.now())
-    except:
-        pass
+    countdownString = StringVar(leftFrame)
+    countdownString.set(countdown())
+    if countdown!= None:
+
+        frontEnd.eventMessage = Message(leftFrame, textvar = countdownString, relief = RAISED)
+        frontEnd.eventMessage.pack(side = TOP)
+        refresh(countdownString, dt.now())
+
 
     lastDay = int(calendar.monthrange(2019, 12)[1])  # get total number of days in month            
     print("days this month,", lastDay)
@@ -215,8 +218,6 @@ def frontEnd():
     frontEnd.inputDay = OptionMenu(rightFrame, frontEnd.dateVar, *allDays)
     frontEnd.inputDay.pack(side =TOP)
 
-
-
     def getVal():                                # gfetch input of selected date
         frontEnd.email_text = ""
         for i in Entries:
@@ -224,21 +225,10 @@ def frontEnd():
         frontEnd.submit.pack_forget()
         createEntry()
 
-
-
-
     frontEnd.submit = Button(bottomFrame, text = "submit", command = getVal)
-    frontEnd.submit.pack(side = TOP)
-    frontEnd.sendButton = Button(bottomFrame, text= "send mail", command = createmail)
-    frontEnd.sendButton.pack(side = BOTTOM)
+    frontEnd.submit.pack(side = BOTTOM)
     plannerWindow.mainloop()
 
 
-def email():                                # compose email and send it to the mail sending function
-    email.sent_from = "YOUR ADRESS"
-    email.to = "RECIEVERS ADRESS"
-    email.subject = "FIRST EMAIL FROM PYTHON!!!!"
-    email.body = "\n Sent from %s, \n sent to %s \n \n \n %s \n \n \n \n" % (email.sent_from, email.to, frontEnd.email_text)
-    backend.mail(email.sent_from ,email.to, email.body) #with the import backend can now be called like this
 createFile()
 frontEnd()
