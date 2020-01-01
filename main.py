@@ -11,7 +11,7 @@ import random
 global Entries
 global colors
 
-colors = ["red", "black", "green", "blue", 'pink','yellow','orange']
+colors = ["red", "black", "green", "blue", 'pink','yellow','orange', 'gold']
 Entries = {}
 Events= {}
 print(os.getcwd())
@@ -37,10 +37,14 @@ def countdown():
     curYear = dt.now().year
     for i in dateList:
         if i == "01-01":
-            curYear = date.today().year + 1
-            today = str(calendar.monthrange(dt.today().year, dt.today().month)[1] - dt.today().day) 
+            if dt.today().month != 1:
+                curYear = date.today().year + 1
+                today = str(calendar.monthrange(dt.today().year, dt.today().month)[1] - dt.today().day) 
+            else:
+                pass            
 
         timeDiff = dt.strptime(str(curYear)+"-"+ i ,'%Y-%m-%d') - dt.today()
+        #print(timeDiff)
         if timeDiff < datetime.timedelta(days = 10) and timeDiff >= datetime.timedelta(days =-1):
             if timeDiff > datetime.timedelta(days = 1):
                 if i == '01-01':
@@ -71,7 +75,6 @@ def refresh(stringvar, time):
 
 def defineLength():
     def proceed():
-        
         submit_entry()
         root.destroy()
     root = Tk()
@@ -215,7 +218,11 @@ def frontEnd():
     Message(rightFrame, text = "SELECT DATE-  ").pack(side= TOP)
     frontEnd.dateVar = StringVar(rightFrame)
     frontEnd.dateVar.set(str(todaysDate))
-    frontEnd.inputDay = OptionMenu(rightFrame, frontEnd.dateVar, *allDays)
+    try:
+        frontEnd.inputDay = OptionMenu(rightFrame, frontEnd.dateVar,*allDays)
+    except:
+        frontEnd.inputDay = OptionMenu(rightFrame, frontEnd.dateVar,todaysDate)
+
     frontEnd.inputDay.pack(side =TOP)
 
     def getVal():                                # gfetch input of selected date
