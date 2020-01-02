@@ -1,6 +1,6 @@
 from tkinter import *
 import datetime
-from datetime import date
+from datetime import date   
 from datetime import datetime as dt
 import calendar
 import csv
@@ -46,22 +46,27 @@ def countdown():
         timeDiff = dt.strptime(str(curYear)+"-"+ i ,'%Y-%m-%d') - dt.today()
         #print(timeDiff)
         if timeDiff < datetime.timedelta(days = 10) and timeDiff >= datetime.timedelta(days =-1):
-            if timeDiff > datetime.timedelta(days = 1):
+            if timeDiff > datetime.timedelta(days = 1): #more than 1 day letf
                 if i == '01-01':
                     daysTo = today + " days to go to " + nameList[dateList.index(i)]
                     break
-                else:
+                else: 
                     daysTo = str(int(i[-2:]) - int(dt.today().day)) + " days to go to " + nameList[dateList.index(i)]
                     break
-            elif str(curYear)+"-"+i == dt.strftime(dt.today(), '%Y-%m-%d'):
+            elif str(curYear)+"-"+i == dt.strftime(dt.today(), '%Y-%m-%d'): # if today is  the day
                 daysTo = "Today is " + nameList[dateList.index(i)]
                 break
-            elif timeDiff < datetime.timedelta(days = 0, hours = 24):
+            elif timeDiff < datetime.timedelta(days = 0, hours = 24): # 24H countdown
                 daysTo = str(dt.strptime(str(curYear)+'-'+i, '%Y-%m-%d') - dt(year = dt.now().year, month = dt.now().month, day = dt.now().day ,minute = dt.now().minute, second = dt.now().second)) + ' to '+nameList[dateList.index(i)]
                 break
         else:
-            daysTo = None
-            pass
+            if i != dateList[-1]: # if not EOL
+                daysTo = None
+                pass
+            else:                # IF EOL
+                daysTo = None 
+                break
+
     return daysTo
 
 def refresh(stringvar, time):
@@ -195,11 +200,12 @@ def frontEnd():
 
     countdownString = StringVar(leftFrame)
     countdownString.set(countdown())
-    if countdown!= None:
 
+    if countdownString.get()!='None':
         frontEnd.eventMessage = Message(leftFrame, textvar = countdownString, relief = RAISED)
         frontEnd.eventMessage.pack(side = TOP)
         refresh(countdownString, dt.now())
+
 
 
     lastDay = int(calendar.monthrange(2019, 12)[1])  # get total number of days in month            
