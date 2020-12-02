@@ -7,7 +7,7 @@ from tkinter import *
 flag = True
 
 def writeToLog(now):
-    with open('C:\\Users\\rohit\\Desktop\\Code\\Day-Planner\\log.txt', 'a') as log:
+    with open('\\log.txt', 'a') as log:
         log.write('email sent at '+ str(now))
 
 def checkTime():
