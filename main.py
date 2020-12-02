@@ -14,11 +14,8 @@ global colors
 colors = ["red", "black", "green", "blue", 'pink','yellow','orange', 'gold']
 Entries = {}
 Events= {}
-print(os.getcwd())
-os.chdir('C:\\Users\\rohit\\Desktop\\Code\\Day-Planner')
-print(os.getcwd())
 def createFile():
-    if os.path.exists('C:\\Users\\rohit\\Desktop\\Code\\Day-Planner\\remindersData.csv') == False:
+    if os.path.exists("\\remindersData.csv') == False:
            # check if file exists
         with open('remindersData.csv', 'w', newline = '') as file:
             writer = csv.writer(file)
@@ -28,7 +25,7 @@ def createFile():
 def countdown():
     dateList = []
     nameList = []
-    with open('C:\\Users\\rohit\\Desktop\\Code\\Day-Planner\\calenderData.csv', 'r') as dates:
+    with open('\\calenderData.csv', 'r') as dates:
         reader = csv.reader(dates)
         next(reader)
         for i in reader:
